@@ -5,20 +5,36 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage(){
-    const [email, setemail] = useState('')
-    const [password, setPassword] = useState('')
-    const router = useRouter()
+    const [email, setemail] = useState('');
+    const [password, setPassword] = useState('');
+    const router = useRouter();
 
     const supabase = createClientComponentClient();
 
-    const handleSignIn = async () => {
-        await supabase.auth.signInWithPassword({
-            email,password
-        })
-        router.refresh();
-        setemail('');
-        setPassword('');
+    const handleSignIn = async (e) => {
+        e.preventDefault(); 
+    
+        try {
+            const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password
+            });
+    
+            if (error) {
+                throw new Error('Invalid credentials. Please try again.');
+            }
+    
+            router.push("/clothing");
+            setemail('');
+            setPassword('');
+        } catch (error) {
+            alert(error.message);
+        }
     }
+    
+
+
+
 
     return (
         <main className="w-screen h-screen relative overflow-hidden">
@@ -199,7 +215,7 @@ export default function LoginPage(){
                             <input type="checkbox" id="remember" name="remember" className="flex-grow-0 flex-shrink-0 w-4 h-4 rounded border-[#bdbdbd] appearance-none focus:outline-none cursor-pointer"/>
                             <label htmlFor="remember" className="flex-grow-0 flex-shrink-0 text-base text-[#333333]">Remember me</label>
                         </div>
-                        <a href="#" className="flex-grow-0 flex-shrink-0 text-base text-[#2962ff]">Forgot password?</a>
+                        <a href="/register" className="flex-grow-0 flex-shrink-0 text-base text-[#2962ff]">Forgot password?</a>
                     </div>
                     <button onClick={handleSignIn} className="flex justify-center items-center flex-grow-0 flex-shrink-0 w-full h-12 bg-[#2962ff] rounded-lg text-white font-medium text-xl focus:outline-none">Login</button>
                 </div>

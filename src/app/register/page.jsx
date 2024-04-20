@@ -1,35 +1,38 @@
 'use client';
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Image from 'next/image';
 
 export default function LoginPage(){
-    const [name, setName] = useState('');
+    const [first_name, setFName] = useState('');
+    const [last_name, setLName] = useState('');
     const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
+    const [phone_number, setPhone] = useState('');
     const [password, setPassword] = useState('');
-    const router = useRouter()
+    const router = useRouter();
 
     const supabase = createClientComponentClient();
 
-    const handleSignUp = async (name, email, phone, password) => {
-        await supabase.auth.signUp({
-            name,
+    const handleSignUp = async (first_name, last_name, email, phone_number, password) => {
+        const { user, error } = await supabase.auth.signUp({
             email,
-            phone,
             password,
-            options: {
-                emailRedirectTo: `${location.origin}/auth/callback`
+            data: {
+                first_name,
+                last_name,
+                phone_number
             }
-        })
-        router.refresh();
-        setName('');
-        setEmail('');
-        setPhone('');
-        setPassword('');
-    }
+        });
+    };
+    
+    
+        if (error) {
+            alert('Error signing up: ' + error.message);
+            return;
+        }
+            router.push('/login');
+    
 
     return (
         <main className="w-screen h-screen relative overflow-hidden">
@@ -196,21 +199,25 @@ export default function LoginPage(){
                             <div className="w-[299.5px] h-px absolute left-[-1px] top-[-1px] bg-[#e0e0e0]"></div>
                         </div>
                     </div>
-                    <div className="h-[850px] w-[350px]">
-                        <h1 className="text-2xl mb-3 text-center">Register</h1>
-                        <div className="flex flex-col gap-3">
-                            <label htmlFor="name">Name</label>
-                            <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} id="name" placeholder="John Doe" className="h-10 p-2 border rounded-xl"/>
-                            <label htmlFor="email">Email</label>
-                            <input type="text" name="email" value={email} onChange={(e) => setEmail(e.target.value)} id="email" placeholder="johndoe@gmail.com" className="h-10 p-2 border rounded-xl text-sm"/>
-                            <label htmlFor="phonenum">Phone Number</label>
-                            <input type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} id="phone" placeholder="+63 9123456789" className="h-10 p-2 border rounded-xl text-sm"/>
-                            <label htmlFor="password">Password</label>
-                            <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} id="password" placeholder="********" className="h-10 p-2 border rounded-xl text-sm"/>
-                            <button onClick={() => handleSignUp(name, email, phone, password)} name="submit" id="submitbtn" className="flex justify-center items-center px-4 py-2 rounded-xl bg-[#ffd700] w-[150px] cursor-pointer text-sm">
-                                REGISTER
-                            </button>
-                        </div>
+                    <div className="h-[850px] w-[350px] absolute top-[195px]">
+                        <form className="flex flex-col gap-3" onSubmit={(e) => {
+    e.preventDefault(); 
+    handleSignUp(first_name, last_name, email, phone_number, password);
+}}>
+    <label htmlFor="first_name">First Name</label>
+    <input type="text" name="first_name" value={first_name} onChange={(e) => setFName(e.target.value)} id="first_name" placeholder="John" className="h-10 p-2 border rounded-xl"/>
+    <label htmlFor="last_name">Last Name</label>
+    <input type="text" name="last_name" value={last_name} onChange={(e) => setLName(e.target.value)} id="last_name" placeholder="Doe" className="h-10 p-2 border rounded-xl"/>
+    <label htmlFor="email">Email</label>
+    <input type="text" name="email" value={email} onChange={(e) => setEmail(e.target.value)} id="email" placeholder="johndoe@gmail.com" className="h-10 p-2 border rounded-xl text-sm"/>
+    <label htmlFor="phone_number">Phone Number</label>
+    <input type="text" name="phone_number" value={phone_number} onChange={(e) => setPhone(e.target.value)} id="phone_number" placeholder="09123456789" className="h-10 p-2 border rounded-xl text-sm"/>
+    <label htmlFor="password">Password</label>
+    <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} id="password" placeholder="********" className="h-10 p-2 border rounded-xl text-sm"/>
+    <button type="submit" name="submit" id="submitbtn" className="flex justify-center items-center px-4 py-2 rounded-xl bg-[#ffd700] w-[150px] cursor-pointer text-sm">
+        REGISTER
+    </button>
+</form>
                     </div>
                 </div>          
             </div>

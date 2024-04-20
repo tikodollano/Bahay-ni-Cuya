@@ -93,11 +93,13 @@ const ClothingPage = () => {
             <Image src="/img/hoodie.png" alt="cotton" width={180} height={150} objectFit="cover" className ="rounded-lg" />
           </div>
           <div className ="details-container h-[20%] w-full bg-white rounded-lg p-2">
-            <h4>HOODIE</h4>
+            <h4>HOODIE</h4>       
             <h2>$6</h2>
           </div>
           <button className ="order-button hidden absolute top-[80px] left-1/2 transform -translate-x-1/2 bg-[#ffd700] px-5 py-3 rounded-[800px] text-white">ORDER</button>
         </div>
+
+    
 
         <div className ="product-card bg-gray-200 h-300 w-[250px] border rounded-lg border-gray-400 relative">
           <div className ="image-container h-4/5 w-full rounded-lg flex justify-center items-center">

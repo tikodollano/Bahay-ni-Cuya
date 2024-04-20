@@ -38,7 +38,8 @@ export default function Home() {
                   </p>
               </button>
           </a>
-            <a href="/login"><button className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 px-5 py-3 rounded-[800px] border border-[#143a79]">
+          <a href="/login">
+              <button className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 px-5 py-3 rounded-[800px] border border-[#143a79]">
               <p className="flex-grow-0 flex-shrink-0 text-base font-semibold text-center uppercase text-[#143a79]">
                 Login
               </p>
